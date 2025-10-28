@@ -1,10 +1,14 @@
+using System.Diagnostics;
 using System.Numerics;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 public class foccusItem : MonoBehaviour
 {
     Renderer objRenderer;
     Collider objCollider;
+    int linecastDetectLayerMask;
+
     bool is_foccused = false;
 
     UnityEngine.Plane[] planes;
@@ -26,9 +30,9 @@ public class foccusItem : MonoBehaviour
     {
         objRenderer = GetComponent<Renderer>();
         objCollider = GetComponent<Collider>();
+        linecastDetectLayerMask = ~ 1 << 7;// all layers excepted the 7
 
         mainCamera = Camera.main;
-        planes = GeometryUtility.CalculateFrustumPlanes(mainCamera);
         Debug.Log($"start item [{this.name}] that can be foccused");
     }
 
@@ -40,12 +44,14 @@ public class foccusItem : MonoBehaviour
         if (!objRenderer.isVisible)
             return;
 
+        planes = GeometryUtility.CalculateFrustumPlanes(mainCamera);
         if (!GeometryUtility.TestPlanesAABB(planes, objCollider.bounds))
             return;
 
         Debug.DrawLine(mainCamera.transform.position, transform.position, Color.red);
-        //if (Physics.Linecast(mainCamera.transform.position, transform.position))
-        //    return;
+        RaycastHit hitInfo;
+        if (Physics.Linecast(mainCamera.transform.position, transform.position, out hitInfo, linecastDetectLayerMask))
+            return;
 
         is_foccused = true;
     }

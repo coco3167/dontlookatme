@@ -7,13 +7,19 @@ public class PlayerInputManager : MonoBehaviour
 {
     [Header("Input References")]
     [SerializeField] private InputActionReference move;
+    [SerializeField] private InputActionReference look;
     
     [Header("Player Parameters")]
-    [SerializeField] private float speed;
+    [SerializeField] private float speed, rotationSpeed;
+    [SerializeField] private float minRotation, maxRotation;
+    [SerializeField] private float rotationLerp;
     
     private PlayerInput m_playerInput;
     private CharacterController m_characterController;
-    private Vector2 m_rawMovement;
+    
+    private Vector2 m_rawMovement, m_rawRotation;
+    private Vector3 m_realMovement;
+    private Quaternion m_realRotation;
 
     private void Awake()
     {
@@ -21,11 +27,23 @@ public class PlayerInputManager : MonoBehaviour
         m_playerInput.onActionTriggered += OnActionTriggered;
 
         m_characterController = GetComponent<CharacterController>();
+        
+        transform.rotation = Quaternion.identity;
+        m_realRotation = Quaternion.identity;
+        
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void FixedUpdate()
     {
-        m_characterController.Move(speed * Time.deltaTime * new Vector3(m_rawMovement.x, 0, m_rawMovement.y));
+        transform.rotation = Quaternion.Lerp(transform.rotation, m_realRotation, rotationLerp);
+        
+        m_realMovement = transform.forward * m_rawMovement.y + transform.right * m_rawMovement.x;
+        m_realMovement.y = 0;
+        m_realRotation.Normalize();
+        m_realMovement *= speed * Time.deltaTime;
+        m_characterController.Move(m_realMovement);
     }
 
     private void OnActionTriggered(InputAction.CallbackContext obj)
@@ -41,6 +59,27 @@ public class PlayerInputManager : MonoBehaviour
             if (obj.canceled)
             {
                 m_rawMovement = Vector2.zero;
+                return;
+            }
+            return;
+        }
+
+        if (obj.action == look.action)
+        {
+            if (obj.performed)
+            {
+                m_rawRotation = obj.ReadValue<Vector2>() * rotationSpeed;
+                
+                m_realRotation *= Quaternion.AngleAxis(m_rawRotation.x, Vector3.up);
+                m_realRotation *= Quaternion.AngleAxis(-m_rawRotation.y, Vector3.right);
+
+                Vector3 clampedRotation = m_realRotation.eulerAngles;
+                if (clampedRotation.x > 180)
+                    clampedRotation.x -= 360;
+                
+                clampedRotation.z = 0;
+                clampedRotation.x = Math.Clamp(clampedRotation.x, minRotation, maxRotation);
+                m_realRotation = Quaternion.Euler(clampedRotation);
                 return;
             }
         }

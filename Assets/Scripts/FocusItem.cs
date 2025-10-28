@@ -51,11 +51,12 @@ public class FocusItem : MonoBehaviour
         if (!GeometryUtility.TestPlanesAABB(planes, objCollider.bounds))
             return;
 
-        Debug.DrawLine(mainCamera.transform.position, transform.position, Color.red);
+        Debug.DrawLine(mainCamera.transform.position, transform.position, Color.yellow);
         RaycastHit hitInfo;
         if (Physics.Linecast(mainCamera.transform.position, transform.position, out hitInfo, linecastDetectLayerMask))
             return;
 
         is_foccused = true;
+        globalCameraFocus.AddFocusItemFrame(gameObject);
     }
 }

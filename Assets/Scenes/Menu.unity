@@ -526,7 +526,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b8b850f949423a043bd5646569e280ce, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 642d20f0ccbfab54fb3be52b1de14d56, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -627,6 +627,9 @@ MonoBehaviour:
   optionsButton: {fileID: 509575341}
   creditsButton: {fileID: 1236137107}
   quitButton: {fileID: 1247129193}
+  objToDeactivate: {fileID: 0}
+  optionsMenu: {fileID: 0}
+  creditsImage: {fileID: 0}
 --- !u!1 &851230494
 GameObject:
   m_ObjectHideFlags: 0

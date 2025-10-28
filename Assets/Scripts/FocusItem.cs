@@ -3,7 +3,7 @@ using System.Numerics;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-public class foccusItem : MonoBehaviour
+public class FocusItem : MonoBehaviour
 {
     Renderer objRenderer;
     Collider objCollider;
@@ -13,6 +13,7 @@ public class foccusItem : MonoBehaviour
 
     UnityEngine.Plane[] planes;
     Camera mainCamera;
+    FocusCamera globalCameraFocus;
 
     void OnDrawGizmosSelected()
     {
@@ -33,6 +34,8 @@ public class foccusItem : MonoBehaviour
         linecastDetectLayerMask = ~ 1 << 7;// all layers excepted the 7
 
         mainCamera = Camera.main;
+        globalCameraFocus = mainCamera.GetComponent<FocusCamera>();
+
         Debug.Log($"start item [{this.name}] that can be foccused");
     }
 

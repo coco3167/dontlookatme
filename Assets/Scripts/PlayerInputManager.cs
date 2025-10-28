@@ -76,9 +76,7 @@ public class PlayerInputManager : MonoBehaviour
                 Vector3 clampedRotation = m_realRotation.eulerAngles;
                 if (clampedRotation.x > 180)
                     clampedRotation.x -= 360;
-        
-                Debug.Log(clampedRotation.x);
-
+                
                 clampedRotation.z = 0;
                 clampedRotation.x = Math.Clamp(clampedRotation.x, minRotation, maxRotation);
                 m_realRotation = Quaternion.Euler(clampedRotation);

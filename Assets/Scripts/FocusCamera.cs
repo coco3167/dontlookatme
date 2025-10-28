@@ -4,6 +4,8 @@ public class FocusCamera : MonoBehaviour
 {
     GameObject focusedItem;
     GameObject lastFoccusedItem; 
+
+    public ItemType selectedItemType;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

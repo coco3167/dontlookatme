@@ -5,6 +5,8 @@ using Debug = UnityEngine.Debug;
 
 public class FocusItem : MonoBehaviour
 {
+    public ItemType itemId;
+
     Renderer objRenderer;
     Collider objCollider;
     int linecastDetectLayerMask;
@@ -47,15 +49,25 @@ public class FocusItem : MonoBehaviour
         if (!objRenderer.isVisible)
             return;
 
+        if (globalCameraFocus.selectedItemType != itemId)
+            return;
+
         planes = GeometryUtility.CalculateFrustumPlanes(mainCamera);
         if (!GeometryUtility.TestPlanesAABB(planes, objCollider.bounds))
             return;
 
-        Debug.DrawLine(mainCamera.transform.position, transform.position, Color.red);
+        Debug.DrawLine(mainCamera.transform.position, transform.position, Color.yellow);
         RaycastHit hitInfo;
         if (Physics.Linecast(mainCamera.transform.position, transform.position, out hitInfo, linecastDetectLayerMask))
             return;
 
         is_foccused = true;
+        globalCameraFocus.AddFocusItemFrame(gameObject);
     }
+}
+
+public enum ItemType
+{
+    FLOWERPOT,
+    GIRAFFE
 }

@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class FocusCamera : MonoBehaviour
 {
-    object focusedItem;
-    object lastFoccusedItem; 
+    GameObject focusedItem;
+    GameObject lastFoccusedItem; 
+
+    public ItemType selectedItemType;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -14,11 +16,15 @@ public class FocusCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!focusedItem) return;
 
+        lastFoccusedItem = focusedItem;
+        focusedItem = null;
     }
     
-    public void AddFocus()
-	{
-		
+    public void AddFocusItemFrame(GameObject itemFocused)
+    {
+        Debug.DrawLine(itemFocused.transform.position, transform.position, Color.red);
+        focusedItem = itemFocused;
 	}
 }

@@ -69,5 +69,9 @@ public class FocusItem : MonoBehaviour
 public enum ItemType
 {
     FLOWERPOT,
-    GIRAFFE
+    GIRAFFE,
+    TRUMPET,
+    CAR,
+    SAW,
+    DINOSAUR,
 }

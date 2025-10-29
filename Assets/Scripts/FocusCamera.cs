@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class FocusCamera : MonoBehaviour
 {
     [SerializeField] private Volume globalVolume;
-
+    
     public double dropOutCancelSpeed = .5;
     public double dropOutSpeed = 2;
     double dropOutProgress = 0;
@@ -33,6 +33,9 @@ public class FocusCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!GameManager.GameStarted)
+            return;
+        
         if (!focusedItem)
         {
             if (dropOutProgress > 0)

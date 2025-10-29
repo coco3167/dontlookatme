@@ -8,7 +8,7 @@ public class FocusItem : MonoBehaviour
 {
     public ItemType itemId;
 
-    Renderer objRenderer;
+    //Renderer objRenderer;
     Collider objCollider;
     int linecastDetectLayerMask;
 
@@ -40,7 +40,7 @@ public class FocusItem : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        objRenderer = GetComponent<Renderer>();
+        //objRenderer = GetComponent<Renderer>();
         objCollider = GetComponent<Collider>();
         linecastDetectLayerMask = ~ 1 << 7;// all layers excepted the 7
 
@@ -56,8 +56,8 @@ public class FocusItem : MonoBehaviour
     {
         is_foccused = false;
 
-        if (!objRenderer.isVisible)
-            return;
+        //if (!objRenderer.isVisible)
+        //    return;
 
         if (globalCameraFocus.selectedItemType != itemId)
             return;
@@ -66,7 +66,11 @@ public class FocusItem : MonoBehaviour
         if (!GeometryUtility.TestPlanesAABB(planes, objCollider.bounds))
             return;
 
-        Debug.DrawLine(mainPlayer.transform.position, transform.position, Color.yellow);
+        Debug.DrawLine(
+            mainPlayer.transform.position,
+            transform.position,
+            Color.yellow
+            );
         RaycastHit hitInfo;
         if (Physics.Linecast(mainPlayer.transform.position, transform.position, out hitInfo, linecastDetectLayerMask))
             return;

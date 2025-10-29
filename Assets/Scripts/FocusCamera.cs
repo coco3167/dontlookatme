@@ -132,6 +132,7 @@ public class FocusCamera : MonoBehaviour
         
     public GameObject GetPlayer()
     {
-        return playerObject;
+        return this.transform.parent.gameObject;
+        //return playerObject;
 	}
 }

@@ -29,7 +29,6 @@ public class FocusCamera : MonoBehaviour
     void Start()
     {
         playerObject = this.transform.parent.gameObject;
-        UnityEngine.Debug.Log(globalVolume.profile);
         UnityEngine.Rendering.VolumeProfile volumeProfile = globalVolume.profile;
         if(!volumeProfile.TryGet(out globalVolumeVignette)) throw new System.NullReferenceException(nameof(globalVolumeVignette));
         if(!volumeProfile.TryGet(out globalVolumeColor)) throw new System.NullReferenceException(nameof(globalVolumeColor));

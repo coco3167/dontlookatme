@@ -8,6 +8,7 @@ using UnityEngine.Rendering;
 public class FocusCamera : MonoBehaviour
 {
     [SerializeField] private Volume globalVolume;
+    [SerializeField] private Canvas endCanvas;
 
     public float dropOutZoomProportion = .5f;
     public float dropOutContrastScore = 1000;
@@ -40,7 +41,8 @@ public class FocusCamera : MonoBehaviour
         playerObject = this.transform.parent.gameObject;
         UnityEngine.Rendering.VolumeProfile volumeProfile = globalVolume.profile;
         if(!volumeProfile.TryGet(out globalVolumeVignette)) throw new System.NullReferenceException(nameof(globalVolumeVignette));
-        if(!volumeProfile.TryGet(out globalVolumeColor)) throw new System.NullReferenceException(nameof(globalVolumeColor));
+        if (!volumeProfile.TryGet(out globalVolumeColor)) throw new System.NullReferenceException(nameof(globalVolumeColor));
+        endCanvas.gameObject.SetActive(false);
 
         UpdateDropEffect();
     }
@@ -87,6 +89,7 @@ public class FocusCamera : MonoBehaviour
     private IEnumerator EndSequence()
     {
         GameManager.GameStarted = false;
+        endCanvas.gameObject.SetActive(true);
 
         actualFocusedItem.GetAudioSource().Play();
         while (actualFocusedItem.GetAudioSource().isPlaying)

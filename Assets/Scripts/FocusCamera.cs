@@ -88,6 +88,7 @@ public class FocusCamera : MonoBehaviour
         // dropout finish
         UnityEngine.Debug.Log($"GAME DYING");
         this.LoseGame();//idk why but not calling this nusisnirgirngunguiozrge
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);//so for now just brutforce this
     }
         
     void UpdateDropEffect()

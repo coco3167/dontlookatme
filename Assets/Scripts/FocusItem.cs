@@ -1,9 +1,8 @@
-using System;
-using DG.Tweening;
+using System.Diagnostics;
+using System.Numerics;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-[RequireComponent(typeof(AudioSource))]
 public class FocusItem : MonoBehaviour
 {
     public ItemType itemId;
@@ -19,25 +18,15 @@ public class FocusItem : MonoBehaviour
     GameObject mainPlayer;
     FocusCamera globalCameraFocus;
 
-    private AudioSource m_audioSource;
-
-    private void Awake()
-    {
-        m_audioSource = GetComponent<AudioSource>();
-    }
-
     void OnDrawGizmosSelected()
     {
-        
-        if (this.is_foccused)
-		{
+        if (is_foccused)
             Gizmos.color = new Color(1f, 0f, 0f, .5f);
-		} else {
-            Gizmos.color = new Color(0f, 1f, 0f, .5f);
-		}
-
-        float scale = (mainCamera == null) ? 1 : Vector3.Distance(mainCamera.transform.position, transform.position) * 0.1f;
-        Gizmos.DrawSphere(transform.position, scale);
+        else
+            Gizmos.color = new Color(0f, 0f, 0f, .5f);
+            
+        Gizmos.matrix = transform.localToWorldMatrix;
+        Gizmos.DrawCube(UnityEngine.Vector3.zero, UnityEngine.Vector3.one);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -45,7 +34,7 @@ public class FocusItem : MonoBehaviour
     {
         //objRenderer = GetComponent<Renderer>();
         objCollider = GetComponent<Collider>();
-        linecastDetectLayerMask = ~ (1 << 7);// all layers excepted the 7
+        linecastDetectLayerMask = ~ 1 << 7;// all layers excepted the 7
 
         mainCamera = Camera.main;
         globalCameraFocus = mainCamera.GetComponent<FocusCamera>();
@@ -57,38 +46,29 @@ public class FocusItem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.is_foccused = CheckFocus();
+        is_foccused = false;
 
-        if (this.is_foccused) globalCameraFocus.AddFocusItemFrame(this);
-    }
-
-    bool CheckFocus()
-    {
         //if (!objRenderer.isVisible)
         //    return;
-        
+
         if (globalCameraFocus.selectedItemType != itemId)
-            return false;
+            return;
 
         planes = GeometryUtility.CalculateFrustumPlanes(mainCamera);
         if (!GeometryUtility.TestPlanesAABB(planes, objCollider.bounds))
-            return false;
+            return;
 
         Debug.DrawLine(
             mainPlayer.transform.position,
             transform.position,
-            Color.green
+            Color.yellow
             );
         RaycastHit hitInfo;
         if (Physics.Linecast(mainPlayer.transform.position, transform.position, out hitInfo, linecastDetectLayerMask))
-            return false;
+            return;
 
-        return true;
-	}
-
-    public AudioSource GetAudioSource()
-    {
-        return m_audioSource;
+        is_foccused = true;
+        globalCameraFocus.AddFocusItemFrame(gameObject);
     }
 }
 

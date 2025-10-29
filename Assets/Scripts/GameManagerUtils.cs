@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManagerUtils : MonoBehaviour
 {
@@ -7,6 +8,10 @@ public class GameManagerUtils : MonoBehaviour
 
     private void Awake()
     {
+        if (!skipMenu)
+        {
+            SceneManager.LoadScene("Menu", LoadSceneMode.Additive);
+        }
         GameManager.GameStarted = skipMenu;
     }
 }

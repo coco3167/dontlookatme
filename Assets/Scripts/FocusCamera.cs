@@ -27,7 +27,6 @@ public class FocusCamera : MonoBehaviour
     //public ItemType selectedItemType;
 
     private AudioSource m_audioSource;
-    private bool m_hasDied = false;
 
     private void Awake()
     {
@@ -37,8 +36,6 @@ public class FocusCamera : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        m_hasDied = false;
-        
         playerObject = this.transform.parent.gameObject;
         UnityEngine.Rendering.VolumeProfile volumeProfile = globalVolume.profile;
         if(!volumeProfile.TryGet(out globalVolumeVignette)) throw new System.NullReferenceException(nameof(globalVolumeVignette));
@@ -50,7 +47,7 @@ public class FocusCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!GameManager.GameStarted || m_hasDied)
+        if(!GameManager.GameStarted)
             return;
         
         if (!focusedFrame)
@@ -88,7 +85,7 @@ public class FocusCamera : MonoBehaviour
 
     private IEnumerator EndSequence()
     {
-        m_hasDied = true;
+        GameManager.GameStarted = false;
 
         actualFocusedItem.GetAudioSource().Play();
         while (actualFocusedItem.GetAudioSource().isPlaying)

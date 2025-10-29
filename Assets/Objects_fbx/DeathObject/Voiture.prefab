@@ -116,7 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8df436a35231e0050a6a6f67e864b526, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FocusItem
-  itemId: 0
+  itemId: 3
 --- !u!82 &4468497187387644182
 AudioSource:
   m_ObjectHideFlags: 0
@@ -129,7 +129,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 7e39b2e322153744aa54c832f65848db, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

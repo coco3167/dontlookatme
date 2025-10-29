@@ -297,7 +297,6 @@ MonoBehaviour:
   dropOutDarknessProportion: 0.5
   dropOutCancelSpeed: 0.5
   dropOutSpeed: 2
-  selectedItemType: 0
 --- !u!82 &4516079678887224033
 AudioSource:
   m_ObjectHideFlags: 0
@@ -500,7 +499,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 987497764fcfc854cbfcaf9d9fd8eca6, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.2
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 1
   Mute: 0

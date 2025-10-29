@@ -75,6 +75,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 33b71d728403d254faa82a2655c792ad, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4922471644631523841}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 33b71d728403d254faa82a2655c792ad, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8634661783621499696}
   m_SourcePrefab: {fileID: 100100000, guid: 33b71d728403d254faa82a2655c792ad, type: 3}
 --- !u!1 &1324761225918445797 stripped
 GameObject:
@@ -102,3 +105,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0855803, y: 0.04010089, z: 0.091850325}
   m_Center: {x: 0.0007904433, y: 0.0014804022, z: -0.00239923}
+--- !u!114 &8634661783621499696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1324761225918445797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8df436a35231e0050a6a6f67e864b526, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FocusItem
+  itemId: 5

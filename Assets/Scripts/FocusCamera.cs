@@ -12,7 +12,7 @@ public class FocusCamera : MonoBehaviour
     public float dropOutZoomProportion = .5f;
     public float dropOutContrastScore = 1000;
     public float dropOutDarknessProportion = .5f;
-
+    
     public double dropOutCancelSpeed = .5;
     public double dropOutSpeed = 2;
     double dropOutProgress = 0;
@@ -40,6 +40,9 @@ public class FocusCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!GameManager.GameStarted)
+            return;
+        
         if (!focusedItem)
         {
             if (dropOutProgress > 0)

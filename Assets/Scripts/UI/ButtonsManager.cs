@@ -28,6 +28,8 @@ namespace UI
             optionsButton.onClick.AddListener(Options);
             creditsButton.onClick.AddListener(Credits);
             quitButton.onClick.AddListener(Quit);
+            
+            EventSystem.current.SetSelectedGameObject(playButton.gameObject);
         }
 
         private void OnEnable()
@@ -39,6 +41,7 @@ namespace UI
         {
             MenuAudio.Instance.PlayFeedbackUI();
             MenuAudio.Instance.StopMainMenuMusic();
+            GameManager.GameStarted = true;
             objToDeactivate.SetActive(false);
         }
 

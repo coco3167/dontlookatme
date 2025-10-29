@@ -1,4 +1,7 @@
+using System;
 using System.Collections;
+using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -14,8 +17,9 @@ public class FocusCamera : MonoBehaviour
     public double dropOutCancelSpeed = .5;
     public double dropOutSpeed = 2;
     double dropOutProgress = 0;
-    FocusItem focusedItem;
-    FocusItem lastFocusedItem;
+    bool focusedFrame = false;
+    FocusItem frameFocusedItem;
+    FocusItem actualFocusedItem;
     GameObject playerObject;
 
     UnityEngine.Rendering.Universal.Vignette globalVolumeVignette;
@@ -23,8 +27,8 @@ public class FocusCamera : MonoBehaviour
 
     //public ItemType selectedItemType;
 
-    private bool m_hasDied;
     private AudioSource m_audioSource;
+    private bool m_losing = false;
 
     private void Awake()
     {
@@ -50,34 +54,35 @@ public class FocusCamera : MonoBehaviour
         if(!GameManager.GameStarted || m_hasDied)
             return;
         
-        if (!focusedItem)
+        if (!focusedFrame)
         {
             if (dropOutProgress > 0)
 			{
                 // dropout cancel
                 dropOutProgress -= Time.deltaTime * dropOutCancelSpeed;
                 if (dropOutProgress <= 0)
-    			{
+                {
                     dropOutProgress = 0;
-    			}
+                    actualFocusedItem = null;
+                    frameFocusedItem = null;
+                }
                 UpdateDropEffect();
 			}
-
             return;
         }
 
+        focusedFrame = false;
 
         if (dropOutProgress < 1)
         {
+            actualFocusedItem = frameFocusedItem;
             dropOutProgress += Time.deltaTime * dropOutSpeed;
-            
+
             // dropout frame
-            lastFocusedItem = focusedItem;
-            focusedItem = null;
             UpdateDropEffect();
             return;
         }
-
+        
         // dropout finish
         StartCoroutine(EndSequence());
     }
@@ -116,17 +121,18 @@ public class FocusCamera : MonoBehaviour
         else
         {
             UnityEngine.Vector3 startPos = transform.parent.InverseTransformPoint(playerObject.transform.position);
-            UnityEngine.Vector3 endPos = transform.parent.InverseTransformPoint(lastFocusedItem.transform.position);
-            float rsize = .1f * progress;
-            UnityEngine.Vector3 randomShake = new(Random.Range(rsize * -1, rsize), Random.Range(rsize * -1, rsize), Random.Range(rsize * -1, rsize));
-            transform.localPosition = UnityEngine.Vector3.Lerp(startPos, endPos, progress * dropOutZoomProportion) + randomShake;
+            UnityEngine.Vector3 endPos = transform.parent.InverseTransformPoint(actualFocusedItem.transform.position);
+            transform.localPosition = UnityEngine.Vector3.Lerp(startPos, endPos, progress * dropOutZoomProportion);
         }
     }
 
     public void AddFocusItemFrame(FocusItem itemFocused)
     {
+        if (frameFocusedItem != itemFocused) UnityEngine.Debug.Log($"new focused item [{frameFocusedItem}] -> [{itemFocused}]");
+        focusedFrame = true;
         UnityEngine.Debug.DrawLine(itemFocused.transform.position, playerObject.transform.position, Color.red);
-        focusedItem = itemFocused;
+        frameFocusedItem = itemFocused;
+        if (!actualFocusedItem) actualFocusedItem = itemFocused;
     }
         
     public GameObject GetPlayer()

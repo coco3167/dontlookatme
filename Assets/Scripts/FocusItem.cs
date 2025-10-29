@@ -15,6 +15,7 @@ public class FocusItem : MonoBehaviour
 
     UnityEngine.Plane[] planes;
     Camera mainCamera;
+    GameObject mainPlayer;
     FocusCamera globalCameraFocus;
 
     void OnDrawGizmosSelected()
@@ -37,6 +38,7 @@ public class FocusItem : MonoBehaviour
 
         mainCamera = Camera.main;
         globalCameraFocus = mainCamera.GetComponent<FocusCamera>();
+        mainPlayer = globalCameraFocus.GetPlayer();
 
         Debug.Log($"start item [{this.name}] that can be foccused");
     }
@@ -56,9 +58,9 @@ public class FocusItem : MonoBehaviour
         if (!GeometryUtility.TestPlanesAABB(planes, objCollider.bounds))
             return;
 
-        Debug.DrawLine(mainCamera.transform.position, transform.position, Color.yellow);
+        Debug.DrawLine(mainPlayer.transform.position, transform.position, Color.yellow);
         RaycastHit hitInfo;
-        if (Physics.Linecast(mainCamera.transform.position, transform.position, out hitInfo, linecastDetectLayerMask))
+        if (Physics.Linecast(mainPlayer.transform.position, transform.position, out hitInfo, linecastDetectLayerMask))
             return;
 
         is_foccused = true;
@@ -69,5 +71,9 @@ public class FocusItem : MonoBehaviour
 public enum ItemType
 {
     FLOWERPOT,
-    GIRAFFE
+    GIRAFFE,
+    TRUMPET,
+    CAR,
+    SAW,
+    DINOSAUR,
 }

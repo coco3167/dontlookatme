@@ -33,9 +33,6 @@ public class PlayerInputManager : MonoBehaviour
         
         transform.rotation = Quaternion.identity;
         m_realRotation = Quaternion.identity;
-        
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void FixedUpdate()

@@ -12,7 +12,7 @@ namespace UI
         [SerializeField] private Button playButton, optionsButton, creditsButton, quitButton;
 
         [Header("Play parameters")]
-        [SerializeField] private GameObject objToDeactivate;
+        [SerializeField] private GameObject tutorialManager;
     
         [Header("Options parameters")]
         [SerializeField] private GameObject optionsMenu;
@@ -23,6 +23,7 @@ namespace UI
         private void Awake()
         {
             MenuAudio.Instance.PlayMainMenuMusic();
+            GameManager.GameStarted = false;
             
             playButton.onClick.AddListener(Play);
             optionsButton.onClick.AddListener(Options);
@@ -39,10 +40,13 @@ namespace UI
 
         private void Play()
         {
-            MenuAudio.Instance.PlayFeedbackUI();
-            MenuAudio.Instance.StopMainMenuMusic();
-            GameManager.GameStarted = true;
-            objToDeactivate.SetActive(false);
+            tutorialManager.SetActive(true);
+            gameObject.SetActive(false);
+            
+            // MenuAudio.Instance.PlayFeedbackUI();
+            // MenuAudio.Instance.StopMainMenuMusic();
+            // GameManager.GameStarted = true;
+            // objToDeactivate.SetActive(false);
         }
 
         private void Options()

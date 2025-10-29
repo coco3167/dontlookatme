@@ -57,7 +57,7 @@ public class FocusItem : MonoBehaviour
         //if (!objRenderer.isVisible)
         //    return;
 
-        if (globalCameraFocus.selectedItemType != itemId)
+        if (GameManager.ItemToFear != itemId)
             return;
 
         planes = GeometryUtility.CalculateFrustumPlanes(mainCamera);

@@ -21,7 +21,7 @@ public class FocusCamera : MonoBehaviour
     UnityEngine.Rendering.Universal.Vignette globalVolumeVignette;
     UnityEngine.Rendering.Universal.ColorAdjustments globalVolumeColor;
 
-    public ItemType selectedItemType;
+    //public ItemType selectedItemType;
 
     private bool m_hasDied;
     private AudioSource m_audioSource;

@@ -13,7 +13,6 @@ public class FocusCamera : MonoBehaviour
     GameObject focusedItem;
     GameObject lastFocusedItem;
 
-    Image effectAlphaImage; 
     UnityEngine.Rendering.Universal.Vignette globalVolumeVignette;
     UnityEngine.Rendering.Universal.ColorAdjustments globalVolumeColor;
 
@@ -22,8 +21,6 @@ public class FocusCamera : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        effectAlphaImage = this.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>();
-
         UnityEngine.Debug.Log(globalVolume.profile);
         UnityEngine.Rendering.VolumeProfile volumeProfile = globalVolume.profile;
         if(!volumeProfile.TryGet(out globalVolumeVignette)) throw new System.NullReferenceException(nameof(globalVolumeVignette));

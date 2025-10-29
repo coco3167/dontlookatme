@@ -66,17 +66,16 @@ public class FocusCamera : MonoBehaviour
     			}
                 UpdateDropEffect();
 			}
-
             return;
         }
 
 
         if (dropOutProgress < 1)
         {
+            lastFocusedItem = focusedItem;
             dropOutProgress += Time.deltaTime * dropOutSpeed;
             
             // dropout frame
-            lastFocusedItem = focusedItem;
             focusedItem = null;
             UpdateDropEffect();
             return;
@@ -126,6 +125,7 @@ public class FocusCamera : MonoBehaviour
 
     public void AddFocusItemFrame(FocusItem itemFocused)
     {
+        if (focusedItem != itemFocused) UnityEngine.Debug.Log($"new focused item [{focusedItem}] -> [{itemFocused}]");
         UnityEngine.Debug.DrawLine(itemFocused.transform.position, playerObject.transform.position, Color.red);
         focusedItem = itemFocused;
     }

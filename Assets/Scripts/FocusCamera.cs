@@ -8,7 +8,8 @@ public class FocusCamera : MonoBehaviour
 {
     [SerializeField] private Volume globalVolume;
 
-    public double dropOutSpeed = 1;
+    public double dropOutCancelSpeed = .5;
+    public double dropOutSpeed = 2;
     double dropOutProgress = 0;
     GameObject focusedItem;
     GameObject lastFocusedItem;
@@ -17,7 +18,7 @@ public class FocusCamera : MonoBehaviour
     UnityEngine.Rendering.Universal.ColorAdjustments globalVolumeColor;
 
     public ItemType selectedItemType;
-    
+        
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -32,15 +33,21 @@ public class FocusCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (focusedItem != lastFocusedItem)
+        if (!focusedItem)
         {
-            // dropout cancel
-            dropOutProgress = 0;
-            UpdateDropEffect();
-        }
+            if (dropOutProgress > 0)
+			{
+                // dropout cancel
+                dropOutProgress -= Time.deltaTime * dropOutCancelSpeed;
+                if (dropOutProgress <= 0)
+    			{
+                    dropOutProgress = 0;
+    			}
+                UpdateDropEffect();
+			}
 
-        if (!focusedItem) return;
+            return;
+        }
 
         dropOutProgress += Time.deltaTime * dropOutSpeed;
 
@@ -56,17 +63,22 @@ public class FocusCamera : MonoBehaviour
         // dropout finish
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-    
+        
     void UpdateDropEffect()
     {
         float progress = (float)dropOutProgress;
         globalVolumeColor.contrast.Override(100f + progress * 100);
         globalVolumeColor.colorFilter.Override(new Color(1 - progress, 1 - progress, 1 - progress));
 	}
-    
+
     public void AddFocusItemFrame(GameObject itemFocused)
     {
         UnityEngine.Debug.DrawLine(itemFocused.transform.position, transform.position, Color.red);
         focusedItem = itemFocused;
+    }
+        
+    public GameObject GetPlayer()
+    {
+        return this.transform.parent.gameObject;
 	}
 }

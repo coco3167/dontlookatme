@@ -37,10 +37,12 @@ public class PlayerInputManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(!GameManager.GameStarted)
+            return;
         
         transform.rotation = Quaternion.Lerp(transform.rotation, m_realRotation, rotationLerp);
         
-        if(!GameManager.GameStarted)
+        if(GameManager.GameEnded)
             return;
         
         m_realMovement = transform.forward * m_rawMovement.y + transform.right * m_rawMovement.x;

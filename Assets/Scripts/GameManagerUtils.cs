@@ -13,5 +13,6 @@ public class GameManagerUtils : MonoBehaviour
             SceneManager.LoadScene("Menu", LoadSceneMode.Additive);
         }
         GameManager.GameStarted = skipMenu;
+        GameManager.GameEnded = false;
     }
 }

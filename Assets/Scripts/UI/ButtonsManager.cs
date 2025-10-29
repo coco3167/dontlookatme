@@ -72,7 +72,7 @@ namespace UI
                 return;
             }
 
-            EditorApplication.isPlaying = false;
+            //EditorApplication.isPlaying = false;
         }
     }
 }

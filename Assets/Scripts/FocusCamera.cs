@@ -1,5 +1,8 @@
+using System;
+using System.Collections;
 using System.Diagnostics;
 using System.Numerics;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
@@ -16,18 +19,28 @@ public class FocusCamera : MonoBehaviour
     public double dropOutCancelSpeed = .5;
     public double dropOutSpeed = 2;
     double dropOutProgress = 0;
-    GameObject focusedItem;
-    GameObject lastFocusedItem;
+    bool focusedFrame = false;
+    FocusItem frameFocusedItem;
+    FocusItem actualFocusedItem;
     GameObject playerObject;
 
     UnityEngine.Rendering.Universal.Vignette globalVolumeVignette;
     UnityEngine.Rendering.Universal.ColorAdjustments globalVolumeColor;
 
     public ItemType selectedItemType;
-        
+
+    private AudioSource m_audioSource;
+    private bool m_losing = false;
+
+    private void Awake()
+    {
+        m_audioSource = GetComponent<AudioSource>();
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        m_losing = false;
         playerObject = this.transform.parent.gameObject;
         UnityEngine.Rendering.VolumeProfile volumeProfile = globalVolume.profile;
         if(!volumeProfile.TryGet(out globalVolumeVignette)) throw new System.NullReferenceException(nameof(globalVolumeVignette));
@@ -39,38 +52,41 @@ public class FocusCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!GameManager.GameStarted)
+        //!GameManager.GameStarted || 
+        if (m_losing)
             return;
         
-        if (!focusedItem)
+        if (!focusedFrame)
         {
             if (dropOutProgress > 0)
 			{
                 // dropout cancel
                 dropOutProgress -= Time.deltaTime * dropOutCancelSpeed;
                 if (dropOutProgress <= 0)
-    			{
+                {
                     dropOutProgress = 0;
-    			}
+                    actualFocusedItem = null;
+                    frameFocusedItem = null;
+                }
                 UpdateDropEffect();
 			}
-
             return;
         }
 
+        focusedFrame = false;
 
         if (dropOutProgress < 1)
         {
+            actualFocusedItem = frameFocusedItem;
             dropOutProgress += Time.deltaTime * dropOutSpeed;
-            
+
             // dropout frame
-            lastFocusedItem = focusedItem;
-            focusedItem = null;
             UpdateDropEffect();
             return;
         }
-
+        
         // dropout finish
+        UnityEngine.Debug.Log($"GAME DYING");
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
         
@@ -89,17 +105,18 @@ public class FocusCamera : MonoBehaviour
         else
         {
             UnityEngine.Vector3 startPos = transform.parent.InverseTransformPoint(playerObject.transform.position);
-            UnityEngine.Vector3 endPos = transform.parent.InverseTransformPoint(lastFocusedItem.transform.position);
-            float rsize = .1f * progress;
-            UnityEngine.Vector3 randomShake = new(Random.Range(rsize * -1, rsize), Random.Range(rsize * -1, rsize), Random.Range(rsize * -1, rsize));
-            transform.localPosition = UnityEngine.Vector3.Lerp(startPos, endPos, progress * dropOutZoomProportion) + randomShake;
+            UnityEngine.Vector3 endPos = transform.parent.InverseTransformPoint(actualFocusedItem.transform.position);
+            transform.localPosition = UnityEngine.Vector3.Lerp(startPos, endPos, progress * dropOutZoomProportion);
         }
     }
 
-    public void AddFocusItemFrame(GameObject itemFocused)
+    public void AddFocusItemFrame(FocusItem itemFocused)
     {
+        if (frameFocusedItem != itemFocused) UnityEngine.Debug.Log($"new focused item [{frameFocusedItem}] -> [{itemFocused}]");
+        focusedFrame = true;
         UnityEngine.Debug.DrawLine(itemFocused.transform.position, playerObject.transform.position, Color.red);
-        focusedItem = itemFocused;
+        frameFocusedItem = itemFocused;
+        if (!actualFocusedItem) actualFocusedItem = itemFocused;
     }
         
     public GameObject GetPlayer()

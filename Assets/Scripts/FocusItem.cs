@@ -68,7 +68,7 @@ public class FocusItem : MonoBehaviour
             return;
 
         is_foccused = true;
-        globalCameraFocus.AddFocusItemFrame(gameObject);
+        globalCameraFocus.AddFocusItemFrame(this);
     }
 }
 

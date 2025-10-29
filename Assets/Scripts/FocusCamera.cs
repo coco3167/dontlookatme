@@ -12,6 +12,7 @@ public class FocusCamera : MonoBehaviour
     public float dropOutZoomProportion = .5f;
     public float dropOutContrastScore = 1000;
     public float dropOutDarknessProportion = .5f;
+    public float dropOutShakePower = 1;
     
     public double dropOutCancelSpeed = .5;
     public double dropOutSpeed = 2;
@@ -118,7 +119,7 @@ public class FocusCamera : MonoBehaviour
         {
             UnityEngine.Vector3 startPos = transform.parent.InverseTransformPoint(playerObject.transform.position);
             UnityEngine.Vector3 endPos = transform.parent.InverseTransformPoint(actualFocusedItem.transform.position);
-            float rsize = .1f * progress;
+            float rsize = dropOutShakePower * progress;
             UnityEngine.Vector3 randomShake = new(UnityEngine.Random.Range(rsize * -1, rsize), UnityEngine.Random.Range(rsize * -1, rsize), UnityEngine.Random.Range(rsize * -1, rsize));
             transform.localPosition = UnityEngine.Vector3.Lerp(startPos, endPos, progress * dropOutZoomProportion) + randomShake;
         }

@@ -31,8 +31,8 @@ public class PlayerInputManager : MonoBehaviour
 
         m_footsteps = GetComponent<AudioSource>();
         
-        transform.rotation = Quaternion.identity;
-        m_realRotation = Quaternion.identity;
+        //transform.rotation = Quaternion.identity;
+        m_realRotation = transform.rotation;
     }
 
     private void FixedUpdate()

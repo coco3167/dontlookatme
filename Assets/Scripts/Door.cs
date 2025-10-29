@@ -23,13 +23,13 @@ public class Door : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(!GameManager.GameStarted)
+        if(!GameManager.GameEnded)
             return;
         
         if (other.CompareTag("Player"))
         {
             StartCoroutine(WaitForRestart());
-            GameManager.GameStarted = false;
+            GameManager.GameEnded = true;
         }
     }
 

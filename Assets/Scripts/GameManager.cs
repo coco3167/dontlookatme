@@ -4,7 +4,7 @@ using Random = UnityEngine.Random;
 
 public static class GameManager
 {
-    public static bool GameStarted;
+    public static bool GameStarted, GameEnded;
     public static ItemType ItemToFear = 0;
 
     public static void RollItem()

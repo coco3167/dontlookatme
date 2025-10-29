@@ -296,6 +296,7 @@ MonoBehaviour:
   dropOutZoomProportion: 0.5
   dropOutContrastScore: 1000
   dropOutDarknessProportion: 0.5
+  dropOutShakePower: 0.2
   dropOutCancelSpeed: 0.5
   dropOutSpeed: 2
 --- !u!82 &4516079678887224033
@@ -451,8 +452,8 @@ CharacterController:
   serializedVersion: 3
   m_Height: 2
   m_Radius: 0.5
-  m_SlopeLimit: 90
-  m_StepOffset: 0.3
+  m_SlopeLimit: 0
+  m_StepOffset: 0.1
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}

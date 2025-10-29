@@ -1,48 +1,67 @@
 using System;
 using System.Collections;
+using System.Reflection;
 using DG.Tweening;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
 public class Door : MonoBehaviour
 {
     [SerializeField] private Transform doorPivot;
+    [SerializeField] private AudioSource winningSource, doorSource, openingSource;
+    [SerializeField] private GameObject[] endObjs;
 
-    private AudioSource m_audioSource;
     private bool m_opened;
 
     private void Awake()
     {
-        m_audioSource = GetComponent<AudioSource>();
+        foreach (GameObject obj in endObjs)
+        {
+            obj.SetActive(false);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(m_opened)
+        if(!GameManager.GameStarted)
             return;
         
         if (other.CompareTag("Player"))
         {
-            Tweener tweener = doorPivot.DOLocalRotate(new Vector3(-90, 90, 0), 1);
-            tweener.OnComplete(GameWon);
-            tweener.Play();
-            m_opened = true;
+            StartCoroutine(WaitForRestart());
+            GameManager.GameStarted = false;
         }
-    }
-
-    private void GameWon()
-    {
-        m_audioSource.Play();
-        StartCoroutine(WaitForRestart());
     }
 
     private IEnumerator WaitForRestart()
     {
-        while (m_audioSource.isPlaying)
+        endObjs[(int)GameManager.ItemToFear].SetActive(true);
+
+        openingSource.Play();
+        while (openingSource.isPlaying)
         {
             yield return new WaitForEndOfFrame();
         }
+        
+        doorSource.Play();
+        bool doorOpened = false;
+        Tweener tweener = doorPivot.DOLocalRotate(new Vector3(-90, 90, 0), 1);
+        tweener.OnComplete(() => doorOpened = true);
+        tweener.Play();
+
+        while (doorSource.isPlaying || !doorOpened)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        yield return new WaitForSeconds(.5f);
+
+        winningSource.Play();
+        while (winningSource.isPlaying)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        
         GameManager.RestartGame();
     }
 }

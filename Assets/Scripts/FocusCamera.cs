@@ -9,6 +9,10 @@ public class FocusCamera : MonoBehaviour
 {
     [SerializeField] private Volume globalVolume;
 
+    public float dropOutZoomProportion = .5f;
+    public float dropOutContrastScore = 1000;
+    public float dropOutDarknessProportion = .5f;
+
     public double dropOutCancelSpeed = .5;
     public double dropOutSpeed = 2;
     double dropOutProgress = 0;
@@ -65,15 +69,15 @@ public class FocusCamera : MonoBehaviour
         }
 
         // dropout finish
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
         
     void UpdateDropEffect()
     {
         // global volume
         float progress = (float)dropOutProgress;
-        globalVolumeColor.contrast.Override(100f + progress * 1000);
-        float grayProgress = 1f - progress * .5f;
+        globalVolumeColor.contrast.Override(100f + progress * dropOutContrastScore);
+        float grayProgress = 1f - progress * dropOutDarknessProportion;
         globalVolumeColor.colorFilter.Override(new Color(grayProgress, grayProgress, grayProgress));
         // zoom
         if (progress == 0)
@@ -84,7 +88,7 @@ public class FocusCamera : MonoBehaviour
         {
             UnityEngine.Vector3 startPos = transform.parent.InverseTransformPoint(playerObject.transform.position);
             UnityEngine.Vector3 endPos = transform.parent.InverseTransformPoint(lastFocusedItem.transform.position);
-            transform.localPosition = UnityEngine.Vector3.Lerp(startPos, endPos, progress * .75f);
+            transform.localPosition = UnityEngine.Vector3.Lerp(startPos, endPos, progress * cameraZoomProportion);
         }
     }
 

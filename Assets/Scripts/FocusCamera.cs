@@ -1,13 +1,11 @@
 using System;
 using System.Collections;
-using System.Diagnostics;
-using System.Numerics;
+using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
+[RequireComponent(typeof(AudioSource))]
 public class FocusCamera : MonoBehaviour
 {
     [SerializeField] private Volume globalVolume;
@@ -40,7 +38,8 @@ public class FocusCamera : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        m_losing = false;
+        m_hasDied = false;
+        
         playerObject = this.transform.parent.gameObject;
         UnityEngine.Rendering.VolumeProfile volumeProfile = globalVolume.profile;
         if(!volumeProfile.TryGet(out globalVolumeVignette)) throw new System.NullReferenceException(nameof(globalVolumeVignette));
@@ -52,8 +51,7 @@ public class FocusCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //!GameManager.GameStarted || 
-        if (m_losing)
+        if(!GameManager.GameStarted || m_hasDied)
             return;
         
         if (!focusedFrame)
@@ -86,8 +84,26 @@ public class FocusCamera : MonoBehaviour
         }
         
         // dropout finish
-        UnityEngine.Debug.Log($"GAME DYING");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        StartCoroutine(EndSequence());
+    }
+
+    private IEnumerator EndSequence()
+    {
+        m_hasDied = true;
+
+        lastFocusedItem.GetAudioSource().Play();
+        while (lastFocusedItem.GetAudioSource().isPlaying)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        
+        m_audioSource.Play();
+        while (m_audioSource.isPlaying)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        
+        GameManager.RestartGame();
     }
         
     void UpdateDropEffect()

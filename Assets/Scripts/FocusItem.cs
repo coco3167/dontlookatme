@@ -1,8 +1,7 @@
-using System.Diagnostics;
-using System.Numerics;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
+[RequireComponent(typeof(AudioSource))]
 public class FocusItem : MonoBehaviour
 {
     public ItemType itemId;
@@ -17,6 +16,13 @@ public class FocusItem : MonoBehaviour
     Camera mainCamera;
     GameObject mainPlayer;
     FocusCamera globalCameraFocus;
+
+    private AudioSource m_audioSource;
+
+    private void Awake()
+    {
+        m_audioSource = GetComponent<AudioSource>();
+    }
 
     void OnDrawGizmosSelected()
     {
@@ -69,6 +75,11 @@ public class FocusItem : MonoBehaviour
 
         is_foccused = true;
         globalCameraFocus.AddFocusItemFrame(this);
+    }
+
+    public AudioSource GetAudioSource()
+    {
+        return m_audioSource;
     }
 }
 

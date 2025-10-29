@@ -32,9 +32,14 @@ namespace UI
             
             MenuAudio.Instance.PlayFeedbackUI();
             MenuAudio.Instance.StopMainMenuMusic();
+            
+            MainMusicManager.Instance.PlayMusic();
+            
             GameManager.GameStarted = true;
+            
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+            
             objToDeactivate.SetActive(false);
         }
     }

@@ -12,7 +12,7 @@ public class FocusCamera : MonoBehaviour
     public float dropOutZoomProportion = .5f;
     public float dropOutContrastScore = 1000;
     public float dropOutDarknessProportion = .5f;
-    public float dropOutShakePower = 1;
+    public float dropOutShakePower = .2f;
     
     public double dropOutCancelSpeed = .5;
     public double dropOutSpeed = 2;

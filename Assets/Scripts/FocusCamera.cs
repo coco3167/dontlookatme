@@ -1,10 +1,8 @@
-using System.Diagnostics;
-using System.Numerics;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
+[RequireComponent(typeof(AudioSource))]
 public class FocusCamera : MonoBehaviour
 {
     [SerializeField] private Volume globalVolume;
@@ -16,18 +14,28 @@ public class FocusCamera : MonoBehaviour
     public double dropOutCancelSpeed = .5;
     public double dropOutSpeed = 2;
     double dropOutProgress = 0;
-    GameObject focusedItem;
-    GameObject lastFocusedItem;
+    FocusItem focusedItem;
+    FocusItem lastFocusedItem;
     GameObject playerObject;
 
     UnityEngine.Rendering.Universal.Vignette globalVolumeVignette;
     UnityEngine.Rendering.Universal.ColorAdjustments globalVolumeColor;
 
     public ItemType selectedItemType;
-        
+
+    private bool m_hasDied;
+    private AudioSource m_audioSource;
+
+    private void Awake()
+    {
+        m_audioSource = GetComponent<AudioSource>();
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        m_hasDied = false;
+        
         playerObject = this.transform.parent.gameObject;
         UnityEngine.Rendering.VolumeProfile volumeProfile = globalVolume.profile;
         if(!volumeProfile.TryGet(out globalVolumeVignette)) throw new System.NullReferenceException(nameof(globalVolumeVignette));
@@ -39,7 +47,7 @@ public class FocusCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!GameManager.GameStarted)
+        if(!GameManager.GameStarted || m_hasDied)
             return;
         
         if (!focusedItem)
@@ -71,6 +79,25 @@ public class FocusCamera : MonoBehaviour
         }
 
         // dropout finish
+        StartCoroutine(EndSequence());
+    }
+
+    private IEnumerator EndSequence()
+    {
+        m_hasDied = true;
+
+        lastFocusedItem.GetAudioSource().Play();
+        while (lastFocusedItem.GetAudioSource().isPlaying)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        
+        m_audioSource.Play();
+        while (m_audioSource.isPlaying)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        
         GameManager.RestartGame();
     }
         
@@ -94,7 +121,7 @@ public class FocusCamera : MonoBehaviour
         }
     }
 
-    public void AddFocusItemFrame(GameObject itemFocused)
+    public void AddFocusItemFrame(FocusItem itemFocused)
     {
         UnityEngine.Debug.DrawLine(itemFocused.transform.position, playerObject.transform.position, Color.red);
         focusedItem = itemFocused;

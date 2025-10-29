@@ -64,6 +64,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e0d4452a8cd2f144f94fff2e483df9a2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4860886874459395257}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e0d4452a8cd2f144f94fff2e483df9a2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1554873276854666267}
   m_SourcePrefab: {fileID: 100100000, guid: e0d4452a8cd2f144f94fff2e483df9a2, type: 3}
 --- !u!1 &8937307147843072953 stripped
 GameObject:
@@ -180,3 +183,24 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!65 &1554873276854666267
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8937307147843072953}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}

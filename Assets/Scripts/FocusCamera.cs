@@ -28,7 +28,7 @@ public class FocusCamera : MonoBehaviour
     //public ItemType selectedItemType;
 
     private AudioSource m_audioSource;
-    private bool m_losing = false;
+    private bool m_hasDied = false;
 
     private void Awake()
     {
@@ -91,8 +91,8 @@ public class FocusCamera : MonoBehaviour
     {
         m_hasDied = true;
 
-        lastFocusedItem.GetAudioSource().Play();
-        while (lastFocusedItem.GetAudioSource().isPlaying)
+        actualFocusedItem.GetAudioSource().Play();
+        while (actualFocusedItem.GetAudioSource().isPlaying)
         {
             yield return new WaitForEndOfFrame();
         }

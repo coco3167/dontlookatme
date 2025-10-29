@@ -51,8 +51,8 @@ public class FocusCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!GameManager.GameStarted || m_losing)
-            return;
+        //if(!GameManager.GameStarted || m_losing)
+        //    return;
         
         if (!focusedItem)
         {
@@ -107,6 +107,8 @@ public class FocusCamera : MonoBehaviour
 
     private IEnumerator LoseGame()
     {
+        UnityEngine.Debug.Log($"GAME IS LOOSEN");
+
         lastFocusedItem.GetAudioSource().Play();
         m_losing = true;
         while (lastFocusedItem.GetAudioSource().isPlaying)

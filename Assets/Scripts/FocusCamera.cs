@@ -71,7 +71,7 @@ public class FocusCamera : MonoBehaviour
         }
 
         // dropout finish
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        GameManager.RestartGame();
     }
         
     void UpdateDropEffect()

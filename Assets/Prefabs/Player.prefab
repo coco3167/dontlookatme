@@ -151,6 +151,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FocusCamera
   globalVolume: {fileID: 0}
+  dropOutZoomProportion: 0.5
+  dropOutContrastScore: 1000
+  dropOutDarknessProportion: 0.5
   dropOutCancelSpeed: 0.5
   dropOutSpeed: 2
   selectedItemType: 0
@@ -169,7 +172,7 @@ GameObject:
   - component: {fileID: 7464006520335157558}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -210,7 +213,7 @@ CharacterController:
   serializedVersion: 3
   m_Height: 2
   m_Radius: 0.5
-  m_SlopeLimit: 45
+  m_SlopeLimit: 90
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001

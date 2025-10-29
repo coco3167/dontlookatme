@@ -48,6 +48,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4683669308469848369, guid: 9a06ebcf4786742319a3aef1ba2a88d3, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d99b54d68faf34f4bb8a7474851ea021, type: 2}
     - target: {fileID: 919132149155446097, guid: 9a06ebcf4786742319a3aef1ba2a88d3, type: 3}
       propertyPath: m_Name
       value: door_model

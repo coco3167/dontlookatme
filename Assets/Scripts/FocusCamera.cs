@@ -117,7 +117,9 @@ public class FocusCamera : MonoBehaviour
         {
             UnityEngine.Vector3 startPos = transform.parent.InverseTransformPoint(playerObject.transform.position);
             UnityEngine.Vector3 endPos = transform.parent.InverseTransformPoint(lastFocusedItem.transform.position);
-            transform.localPosition = UnityEngine.Vector3.Lerp(startPos, endPos, progress * dropOutZoomProportion);
+            float rsize = .1f * progress;
+            UnityEngine.Vector3 randomShake = new(Random.Range(rsize * -1, rsize), Random.Range(rsize * -1, rsize), Random.Range(rsize * -1, rsize));
+            transform.localPosition = UnityEngine.Vector3.Lerp(startPos, endPos, progress * dropOutZoomProportion) + randomShake;
         }
     }
 

@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Numerics;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
@@ -13,6 +14,7 @@ public class FocusCamera : MonoBehaviour
     double dropOutProgress = 0;
     GameObject focusedItem;
     GameObject lastFocusedItem;
+    GameObject playerObject;
 
     UnityEngine.Rendering.Universal.Vignette globalVolumeVignette;
     UnityEngine.Rendering.Universal.ColorAdjustments globalVolumeColor;
@@ -22,6 +24,7 @@ public class FocusCamera : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        playerObject = this.transform.parent.gameObject;
         UnityEngine.Debug.Log(globalVolume.profile);
         UnityEngine.Rendering.VolumeProfile volumeProfile = globalVolume.profile;
         if(!volumeProfile.TryGet(out globalVolumeVignette)) throw new System.NullReferenceException(nameof(globalVolumeVignette));
@@ -52,10 +55,11 @@ public class FocusCamera : MonoBehaviour
             return;
         }
 
-        dropOutProgress += Time.deltaTime * dropOutSpeed;
 
         if (dropOutProgress < 1)
         {
+            dropOutProgress += Time.deltaTime * dropOutSpeed;
+            
             // dropout frame
             lastFocusedItem = focusedItem;
             focusedItem = null;
@@ -64,24 +68,37 @@ public class FocusCamera : MonoBehaviour
         }
 
         // dropout finish
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
         
     void UpdateDropEffect()
     {
+        // global volume
         float progress = (float)dropOutProgress;
-        globalVolumeColor.contrast.Override(100f + progress * 100);
-        globalVolumeColor.colorFilter.Override(new Color(1 - progress, 1 - progress, 1 - progress));
-	}
+        globalVolumeColor.contrast.Override(100f + progress * 1000);
+        float grayProgress = 1f - progress * .5f;
+        globalVolumeColor.colorFilter.Override(new Color(grayProgress, grayProgress, grayProgress));
+        // zoom
+        if (progress == 0)
+        {
+            transform.localPosition = UnityEngine.Vector3.zero;
+        }
+        else
+        {
+            UnityEngine.Vector3 startPos = transform.parent.InverseTransformPoint(playerObject.transform.position);
+            UnityEngine.Vector3 endPos = transform.parent.InverseTransformPoint(lastFocusedItem.transform.position);
+            transform.localPosition = UnityEngine.Vector3.Lerp(startPos, endPos, progress * .75f);
+        }
+    }
 
     public void AddFocusItemFrame(GameObject itemFocused)
     {
-        UnityEngine.Debug.DrawLine(itemFocused.transform.position, transform.position, Color.red);
+        UnityEngine.Debug.DrawLine(itemFocused.transform.position, playerObject.transform.position, Color.red);
         focusedItem = itemFocused;
     }
         
     public GameObject GetPlayer()
     {
-        return this.transform.parent.gameObject;
+        return playerObject;
 	}
 }

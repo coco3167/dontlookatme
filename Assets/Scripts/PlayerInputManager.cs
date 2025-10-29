@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(PlayerInput), typeof(CharacterController))]
+[RequireComponent(typeof(PlayerInput), typeof(CharacterController), typeof(AudioSource))]
 public class PlayerInputManager : MonoBehaviour
 {
     [Header("Input References")]
@@ -13,7 +13,8 @@ public class PlayerInputManager : MonoBehaviour
     [SerializeField] private float speed, rotationSpeed;
     [SerializeField] private float minRotation, maxRotation;
     [SerializeField] private float rotationLerp;
-    
+
+    private AudioSource m_footsteps;
     private PlayerInput m_playerInput;
     private CharacterController m_characterController;
     
@@ -27,6 +28,8 @@ public class PlayerInputManager : MonoBehaviour
         m_playerInput.onActionTriggered += OnActionTriggered;
 
         m_characterController = GetComponent<CharacterController>();
+
+        m_footsteps = GetComponent<AudioSource>();
         
         transform.rotation = Quaternion.identity;
         m_realRotation = Quaternion.identity;
@@ -41,8 +44,19 @@ public class PlayerInputManager : MonoBehaviour
         
         m_realMovement = transform.forward * m_rawMovement.y + transform.right * m_rawMovement.x;
         m_realMovement.y = 0;
-        m_realRotation.Normalize();
+        m_realMovement.Normalize();
         m_realMovement *= speed * Time.deltaTime;
+
+        if (m_realMovement.sqrMagnitude > 0)
+        {
+            if(!m_footsteps.isPlaying)
+                m_footsteps.Play();
+        }
+        else
+        {
+            m_footsteps.Pause();
+        }
+        
         m_characterController.Move(m_realMovement);
     }
 

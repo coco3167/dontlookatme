@@ -329,7 +329,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 246902575667589904, guid: a21fa4c35dc470b4d9e8838701502fd2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 22.9
+      value: -44.15
       objectReference: {fileID: 0}
     - target: {fileID: 246902575667589904, guid: a21fa4c35dc470b4d9e8838701502fd2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -337,7 +337,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 246902575667589904, guid: a21fa4c35dc470b4d9e8838701502fd2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 22.5
+      value: 27.33
       objectReference: {fileID: 0}
     - target: {fileID: 246902575667589904, guid: a21fa4c35dc470b4d9e8838701502fd2, type: 3}
       propertyPath: m_LocalRotation.w
@@ -373,12 +373,16 @@ PrefabInstance:
       objectReference: {fileID: 390540238}
     - target: {fileID: 4825040741255609296, guid: a21fa4c35dc470b4d9e8838701502fd2, type: 3}
       propertyPath: dropOutSpeed
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4825040741255609296, guid: a21fa4c35dc470b4d9e8838701502fd2, type: 3}
       propertyPath: globalVolume
       value: 
       objectReference: {fileID: 1787090178}
+    - target: {fileID: 4825040741255609296, guid: a21fa4c35dc470b4d9e8838701502fd2, type: 3}
+      propertyPath: dropOutShakePower
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 4825040741255609296, guid: a21fa4c35dc470b4d9e8838701502fd2, type: 3}
       propertyPath: dropOutCancelSpeed
       value: 3

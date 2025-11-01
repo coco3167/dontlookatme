@@ -329,7 +329,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 246902575667589904, guid: a21fa4c35dc470b4d9e8838701502fd2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -46
+      value: 22.9
       objectReference: {fileID: 0}
     - target: {fileID: 246902575667589904, guid: a21fa4c35dc470b4d9e8838701502fd2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -337,7 +337,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 246902575667589904, guid: a21fa4c35dc470b4d9e8838701502fd2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 25
+      value: 22.5
       objectReference: {fileID: 0}
     - target: {fileID: 246902575667589904, guid: a21fa4c35dc470b4d9e8838701502fd2, type: 3}
       propertyPath: m_LocalRotation.w
@@ -530,6 +530,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainLevel
       objectReference: {fileID: 0}
+    - target: {fileID: 7084867235784640517, guid: 5fc0bebd3797931498fcca0fcd7aecc0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.672
+      objectReference: {fileID: 0}
+    - target: {fileID: 8097385144186575519, guid: 5fc0bebd3797931498fcca0fcd7aecc0, type: 3}
+      propertyPath: endCanvas
+      value: 
+      objectReference: {fileID: 390540238}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 5241874173611994714, guid: 5fc0bebd3797931498fcca0fcd7aecc0, type: 3}

@@ -103,7 +103,7 @@ public class FocusCamera : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         
-        GameManager.RestartGame();
+        GameManager.RestartGame(true);
     }
         
     void UpdateDropEffect()

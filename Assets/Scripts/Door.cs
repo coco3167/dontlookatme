@@ -10,6 +10,7 @@ public class Door : MonoBehaviour
     [SerializeField] private Transform doorPivot;
     [SerializeField] private AudioSource winningSource, doorSource, openingSource;
     [SerializeField] private GameObject[] endObjs;
+    [SerializeField] private Canvas endCanvas;
 
     private bool m_opened;
 
@@ -23,8 +24,8 @@ public class Door : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(!GameManager.GameEnded)
-            return;
+        //if(!GameManager.GameEnded)
+        //    return;
         
         if (other.CompareTag("Player"))
         {
@@ -55,6 +56,7 @@ public class Door : MonoBehaviour
         }
 
         yield return new WaitForSeconds(.5f);
+        endCanvas.gameObject.SetActive(true);
 
         winningSource.Play();
         while (winningSource.isPlaying)
@@ -62,6 +64,7 @@ public class Door : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         
-        GameManager.RestartGame();
+        yield return new WaitForSeconds(2f);
+        GameManager.RestartGame(false);
     }
 }

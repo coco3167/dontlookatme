@@ -74,5 +74,15 @@ namespace UI
 
             //EditorApplication.isPlaying = false;
         }
+
+        private void Update()
+        {
+            
+            if (GameManager.WanaRestart)
+            {
+                Play();
+                return;
+            }
+        }
     }
 }

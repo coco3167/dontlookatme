@@ -8,6 +8,7 @@ public class PlayerInputManager : MonoBehaviour
     [Header("Input References")]
     [SerializeField] private InputActionReference move;
     [SerializeField] private InputActionReference look;
+    [SerializeField] private InputActionReference pause;
     
     [Header("Player Parameters")]
     [SerializeField] private float speed, rotationSpeed;
@@ -86,19 +87,26 @@ public class PlayerInputManager : MonoBehaviour
             if (obj.performed)
             {
                 m_rawRotation = obj.ReadValue<Vector2>() * rotationSpeed;
-                
+
                 m_realRotation *= Quaternion.AngleAxis(m_rawRotation.x, Vector3.up);
                 m_realRotation *= Quaternion.AngleAxis(-m_rawRotation.y, Vector3.right);
 
                 Vector3 clampedRotation = m_realRotation.eulerAngles;
                 if (clampedRotation.x > 180)
                     clampedRotation.x -= 360;
-                
+
                 clampedRotation.z = 0;
                 clampedRotation.x = Math.Clamp(clampedRotation.x, minRotation, maxRotation);
                 m_realRotation = Quaternion.Euler(clampedRotation);
                 return;
             }
+        }
+
+        if (obj.action == pause.action)
+        {
+            if (!GameManager.GameStarted) return;
+            Debug.Log("Pause");
+            GameManager.PausingGame();
         }
     }
 }

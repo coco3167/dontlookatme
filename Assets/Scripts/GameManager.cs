@@ -16,6 +16,11 @@ public static class GameManager
     public static void RestartGame(bool WanaRestart = false)
     {
         GameManager.WanaRestart = WanaRestart;
+        GameManager.GameStarted = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+    public static void PausingGame()
+	{
+        RestartGame(false);
+	}
 }
